@@ -9,7 +9,6 @@ except ImportError:
     print >>sys.stderr, 'Failed to import pygame. Is it installed?'
     sys.exit(-1)
 
-DEBUG = False
 BG_COLOR = (0, 0, 0) # Black
 FONT_SIZE = 36
 HEADING_SIZE = 48
@@ -20,14 +19,24 @@ GUTTER_HEIGHT = 50 # Space to reserve at bottom (to account for window manager
                    # stuffs)
 MEDIA_PLAYER = ['mplayer', '-fs', '%(file)s']
 
+mode = None # Calculated on startup.
+
 def fill(xs, d):
     '''Do string substitution on an array of target strings.'''
     return map(lambda x: x % d, xs)
 
 def play(filename):
-    return subprocess.call(fill(MEDIA_PLAYER, {
+    # Go out of full screen so the media player can take over.
+    pygame.display.set_mode(mode)
+
+    # Play the file.
+    ret = subprocess.call(fill(MEDIA_PLAYER, {
         'file':filename,
     }))
+
+    # Switch back to full screen.
+    pygame.display.set_mode(mode, pygame.FULLSCREEN)
+    return ret
 
 font = None
 heading_font = None
@@ -99,6 +108,8 @@ def get_items(root, current):
     return items
 
 def main():
+    global mode
+
     if len(sys.argv) != 2:
         print >>sys.stderr, 'Usage: %s source' % sys.argv[0]
         return -1
@@ -112,11 +123,9 @@ def main():
     pygame.display.set_caption('sippy')
     desktop_width = pygame.display.Info().current_w
     desktop_height = pygame.display.Info().current_h
-    if DEBUG:
-        screen = pygame.display.set_mode(640, 480)
-    else:
-        screen = pygame.display.set_mode((desktop_width, desktop_height))
-        pygame.mouse.set_visible(False)
+    mode = (desktop_width, desktop_height)
+    screen = pygame.display.set_mode(mode, pygame.FULLSCREEN)
+    pygame.mouse.set_visible(False)
 
     def refresh():
         '''Redraw the screen.'''
@@ -165,6 +174,9 @@ def main():
                 refresh()
             else:
                 play(path)
+                # The mode toggling `play` has done will have blanked the
+                # screen, so refresh it.
+                refresh()
 
 if __name__ == '__main__':
     sys.exit(main())
