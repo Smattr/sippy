@@ -15,8 +15,6 @@ HEADING_SIZE = 48
 HEADING_COLOR = (180, 180, 180) # Lighter grey
 UNSELECTED_COLOR = (150, 150, 150) # Grey
 SELECTED_COLOR = (255, 255, 255) # White
-GUTTER_HEIGHT = 50 # Space to reserve at bottom (to account for window manager
-                   # stuffs)
 MEDIA_PLAYER = ['mplayer', '-fs', '%(file)s']
 
 mode = None # Calculated on startup.
@@ -59,10 +57,10 @@ def display(screen, heading, items, selected):
     height = screen.get_height()
     width = screen.get_width()
 
-    if 20 + HEADING_SIZE + FONT_SIZE * len(items) + GUTTER_HEIGHT > height:
+    if 20 + HEADING_SIZE + FONT_SIZE * len(items) > height:
         # Items won't fit on screen. We'll need to simulate scrolling.
         # Calculate the window of items we'll show.
-        max_items = (height - 20 - HEADING_SIZE - GUTTER_HEIGHT) / FONT_SIZE
+        max_items = (height - 20 - HEADING_SIZE) / FONT_SIZE
         offset = selected - (max_items / 2)
         if offset + max_items > len(items) - 1:
             offset = len(items) - max_items
