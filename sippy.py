@@ -108,10 +108,12 @@ def main():
     # Setup our background.
     pygame.init()
     pygame.display.set_caption('sippy')
+    desktop_width = pygame.display.Info().current_w
+    desktop_height = pygame.display.Info().current_h
     if DEBUG:
         screen = pygame.display.set_mode(640, 480)
     else:
-        screen = pygame.display.set_mode(pygame.display.list_modes()[0])
+        screen = pygame.display.set_mode((desktop_width, desktop_height))
         pygame.mouse.set_visible(False)
 
     def refresh():
