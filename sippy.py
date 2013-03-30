@@ -13,7 +13,7 @@ BG_COLOR = (0, 0, 0) # Black
 FONT_SIZE = 36
 HEADING_SIZE = 48
 HEADING_COLOR = (180, 180, 180) # Lighter grey
-UNSELECTED_COLOR = (150, 150, 150) # Grey
+UNSELECTED_COLOR = (70, 70, 70) # Grey
 SELECTED_COLOR = (255, 255, 255) # White
 MEDIA_PLAYER = ['mplayer', '-fs', '%(file)s']
 
