@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os, subprocess, sys
+import os, re, subprocess, sys
 
 try:
     import pygame
@@ -15,7 +15,6 @@ HEADING_SIZE = 48
 HEADING_COLOR = (180, 180, 180) # Lighter grey
 UNSELECTED_COLOR = (70, 70, 70) # Grey
 SELECTED_COLOR = (255, 255, 255) # White
-MEDIA_PLAYER = ['mplayer', '-fs', '%(file)s']
 
 mode = None # Calculated on startup.
 
@@ -23,18 +22,26 @@ def fill(xs, d):
     '''Do string substitution on an array of target strings.'''
     return map(lambda x: x % d, xs)
 
-def play(filename):
-    # Go out of full screen so the media player can take over.
-    pygame.display.set_mode(mode)
+class Handler(object):
+    def __init__(self, matches, command):
+        self.matches = matches
+        self.command = command
 
-    # Play the file.
-    ret = subprocess.call(fill(MEDIA_PLAYER, {
-        'file':filename,
-    }))
+    def open(self, item):
+        # Go out of full screen so the media player can take over.
+        pygame.display.set_mode(mode)
 
-    # Switch back to full screen.
-    pygame.display.set_mode(mode, pygame.FULLSCREEN)
-    return ret
+        # Open the file.
+        ret = subprocess.call(fill(self.command, {'file':item}))
+
+        # Switch back to full screen.
+        pygame.display.set_mode(mode, pygame.FULLSCREEN)
+        return ret
+
+HANDLERS = [
+    Handler(r'\.sh$', ['bash', '%(file)s']),
+    Handler(r'.*', ['mplayer', '-fs', '%(file)s']), # Catch all
+]
 
 font = None
 heading_font = None
@@ -171,8 +178,11 @@ def main():
                 selected = 0
                 refresh()
             else:
-                play(path)
-                # The mode toggling `play` has done will have blanked the
+                for h in HANDLERS:
+                    if re.search(h.matches, path):
+                        h.open(path)
+                        break
+                # The mode toggling `open` has done will have blanked the
                 # screen, so refresh it.
                 refresh()
 
