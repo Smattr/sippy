@@ -40,6 +40,7 @@ class Handler(object):
 
 HANDLERS = [
     Handler(r'\.sh$', ['bash', '%(file)s']),
+    Handler(r'\.py$', ['python', '%(file)s']),
     Handler(r'.*', ['mplayer', '-fs', '%(file)s']), # Catch all
 ]
 
