@@ -106,8 +106,7 @@ def get_items(root, current):
     try:
         items = sorted(os.listdir(current))
     except:
-        # FIXME: Yuck. Handle this better.
-        items = ['<FAILED>']
+        items = []
     if current != root:
         # If we're not at the root, give the user a way up.
         items = ['..'] + items
