@@ -131,6 +131,8 @@ def main():
     mode = (desktop_width, desktop_height)
     screen = pygame.display.set_mode(mode, pygame.FULLSCREEN)
     pygame.mouse.set_visible(False)
+    pygame.event.set_allowed(None)
+    pygame.event.set_allowed(pygame.KEYDOWN)
 
     def refresh():
         '''Redraw the screen.'''
@@ -143,10 +145,6 @@ def main():
 
     while True:
         ev = pygame.event.wait()
-
-        # Skip things like mouse events.
-        if ev.type != pygame.KEYDOWN:
-            continue
 
         if ev.key in [pygame.K_ESCAPE, pygame.K_LEFT]:
             # Go up a directory or, if we're at root, exit.
