@@ -135,6 +135,7 @@ def main():
     pygame.mouse.set_visible(False)
     pygame.event.set_allowed(None)
     pygame.event.set_allowed(pygame.KEYDOWN)
+    pygame.key.set_repeat(300, 30)
 
     def refresh():
         '''Redraw the screen.'''
