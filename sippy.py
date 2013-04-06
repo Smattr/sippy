@@ -114,16 +114,6 @@ def get_items(root, current):
         items = ['..'] + items
     return items
 
-def events():
-    pygame.event.set_allowed(None)
-    pygame.event.set_allowed(pygame.KEYDOWN)
-
-    while True:
-        ev = pygame.event.wait()
-        if ev.key in [pygame.K_ESCAPE, pygame.K_LEFT, pygame.K_UP, \
-            pygame.K_DOWN, pygame.K_RETURN, pygame.K_RIGHT]:
-            yield ev.key
-
 def main():
     global mode
 
@@ -143,6 +133,8 @@ def main():
     mode = (desktop_width, desktop_height)
     screen = pygame.display.set_mode(mode, pygame.FULLSCREEN)
     pygame.mouse.set_visible(False)
+    pygame.event.set_allowed(None)
+    pygame.event.set_allowed(pygame.KEYDOWN)
 
     def refresh():
         '''Redraw the screen.'''
@@ -153,9 +145,10 @@ def main():
         display(screen, path, items, selected)
     refresh()
 
-    for k in events():
+    while True:
+        ev = pygame.event.wait()
 
-        if k in [pygame.K_ESCAPE, pygame.K_LEFT]:
+        if ev.key in [pygame.K_ESCAPE, pygame.K_LEFT]:
             # Go up a directory or, if we're at root, exit.
             if current == root:
                 return 0
@@ -166,16 +159,16 @@ def main():
                 refresh()
 
         # Item selection.
-        elif k == pygame.K_UP:
+        elif ev.key == pygame.K_UP:
             if selected != 0:
                 selected -= 1
                 refresh()
-        elif k == pygame.K_DOWN:
+        elif ev.key == pygame.K_DOWN:
             if selected != len(items) - 1:
                 selected += 1
                 refresh()
 
-        elif k in [pygame.K_RETURN, pygame.K_RIGHT]:
+        elif ev.key in [pygame.K_RETURN, pygame.K_RIGHT]:
             # Enter selection. Either go into the selected directory or play
             # the selected file.
             path = os.path.join(current, items[selected])
