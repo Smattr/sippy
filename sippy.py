@@ -15,6 +15,7 @@ HEADING_SIZE = 48
 HEADING_COLOR = (180, 180, 180) # Lighter grey
 UNSELECTED_COLOR = (70, 70, 70) # Grey
 SELECTED_COLOR = (255, 255, 255) # White
+EXTENSIONS_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'extensions')
 
 mode = None # Calculated on startup.
 
@@ -41,6 +42,7 @@ class Handler(object):
 HANDLERS = [
     Handler(r'\.sh$', ['bash', '%(file)s']),
     Handler(r'\.py$', ['python', '%(file)s']),
+    Handler(r'\.(bin|cue)$', [os.path.join(EXTENSIONS_PATH, 'binplayer.sh'), '%(file)s', '-fs']),
     Handler(r'.*', ['mplayer', '-fs', '%(file)s']), # Catch all
 ]
 
