@@ -141,7 +141,7 @@ def main():
         assert current.startswith(root)
         path = current[len(root):]
         if current == root:
-            path = '/%s' % path
+            path = '/'
         display(screen, path, items, selected)
     refresh()
 
