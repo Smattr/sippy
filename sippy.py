@@ -177,7 +177,7 @@ def main():
                 refresh()
             else:
                 for h in HANDLERS:
-                    if re.search(h.matches, path):
+                    if re.search(h.matches, path, re.IGNORECASE):
                         h.open(path)
                         break
                 # The mode toggling `open` has done will have blanked the
