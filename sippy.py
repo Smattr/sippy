@@ -169,6 +169,21 @@ def main():
                 selected += 1
                 refresh()
 
+        # Jump to items alphabetically.
+        elif ev.key in range(pygame.K_a, pygame.K_z + 1):
+            key = chr(ev.key - (pygame.K_a - ord('a')))
+            if selected == len(items) - 1:
+                new_selected = 0
+            else:
+                new_selected = selected + 1
+            if items[new_selected][0].lower() > key:
+                new_selected = 0
+            while items[new_selected][0].lower() < key:
+                new_selected += 1
+            if items[new_selected][0].lower() == key:
+                selected = new_selected
+                refresh()
+
         elif ev.key in [pygame.K_RETURN, pygame.K_RIGHT]:
             # Enter selection. Either go into the selected directory or play
             # the selected file.
