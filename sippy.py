@@ -171,7 +171,7 @@ def main():
 
         # Jump to items alphabetically.
         elif ev.key in range(pygame.K_a, pygame.K_z + 1):
-            key = chr(ev.key - (pygame.K_a - ord('a')))
+            key = chr(ev.key)
             n = (selected + 1) % len(items)
             while n != selected and items[n][0].lower() != key:
                 n = (n + 1) % len(items)
