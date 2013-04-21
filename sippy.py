@@ -43,6 +43,7 @@ HANDLERS = [
     Handler(r'\.sh$', ['bash', '%(file)s']),
     Handler(r'\.py$', ['python', '%(file)s']),
     Handler(r'\.(bin|cue)$', [os.path.join(EXTENSIONS_PATH, 'binplayer.sh'), '%(file)s', '-fs']),
+    Handler(r'\.pls$', ['mplayer', '-fs', '-cache-min', '0', '-mc', '0.1', '-playlist', '%(files)s']),
     Handler(r'.*', ['mplayer', '-fs', '%(file)s']), # Catch all
 ]
 
