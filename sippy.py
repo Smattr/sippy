@@ -151,10 +151,15 @@ def main():
     while True:
         ev = pygame.event.wait()
 
-        if ev.key in [pygame.K_ESCAPE, pygame.K_LEFT]:
-            # Go up a directory or, if we're at root, exit.
+        if ev.key == pygame.K_ESCAPE:
+            # Exit.
+            return 0
+
+        elif ev.key == pygame.K_LEFT:
+            # Go up a directory.
             if current == root:
-                return 0
+                # Ignore if we're already at the top.
+                continue
             else:
                 current = os.path.abspath(os.path.join(current, '..'))
                 items = get_items(root, current)
